@@ -1,0 +1,117 @@
+/*
+ * jQuery-busy v1.0
+ * Copyright 2010 Tomasz Szymczyszyn
+ *
+ * Examples available at:
+ * http://kammerer.boo.pl/code/jquery-busy
+ *
+ * This plug-in is dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ */
+(function($) {
+  // Helper object factory 
+  function Busy(options) {
+    this.options = $.extend({}, Busy.defaults, options);
+  };
+
+  Busy.prototype.hide = function(targets) {
+    targets.each(function() {
+      var busyImg = $.data(this, "busy");
+      if (busyImg)
+        busyImg.remove();
+
+      $(this).css("visibility", "");
+
+      $.data(this, "busy", null);
+    });
+  };
+
+  Busy.prototype.show = function(targets) {
+    var that = this;
+
+    targets.each(function() {
+      if ($.data(this, "busy"))
+        return;
+
+      var target = $(this);
+
+      var busyImg = that.buildImg();
+      $("body").append(busyImg);
+      that.positionImg(target, busyImg, that.options.position);
+
+      if (that.options.hide)
+        target.css("visibility", "hidden");
+
+      $.data(this, "busy", busyImg);
+    });
+  };
+
+  // Creates image node, wraps it in $ object and returns.
+  Busy.prototype.buildImg = function() {
+    var html = "<img src='" + this.options.img + "' alt='" + this.options.alt + "' title='" + this.options.title + "'";
+
+    if (this.options.width)
+      html += " width='" + this.options.width + "'";
+   
+    if (this.options.height)
+      html += " height='" + this.options.height + "'";
+
+    html += " />";
+
+    return $(html);
+  };
+
+  Busy.prototype.positionImg = function(target, busyImg, position) {
+    var targetPosition = target.offset();
+    var targetWidth = target.outerWidth();
+    var targetHeight = target.outerHeight();
+
+    var busyWidth = busyImg.outerWidth();
+    var busyHeight = busyImg.outerHeight();
+
+    if (position == "left") {
+      var busyLeft = targetPosition.left - busyWidth - this.options.offset;
+    }
+    else if (position == "right") {
+      var busyLeft = targetPosition.left + targetWidth + this.options.offset;
+    }
+    else {
+      var busyLeft = targetPosition.left + (targetWidth - busyWidth) / 2.0;
+    }
+
+    var busyTop = targetPosition.top + (targetHeight - busyHeight) / 2.0;
+
+    busyImg.css("position", "absolute");
+    busyImg.css("left", busyLeft + "px");
+    busyImg.css("top", busyTop + "px");
+  };
+
+  Busy.defaults = {
+    img : 'busy.gif',
+    alt : 'Please wait...',
+    title : 'Please wait...',
+    hide : true,
+    position : 'center',
+    zIndex : 1001,
+    width : null,
+    height : null,
+    offset : 10
+  };
+
+  $.fn.busy = function(options, defaults) {
+    if ($.inArray(options, ["clear", "hide", "remove"]) != -1) {
+      // Hide busy image(s)
+      new Busy(options).hide($(this));     
+    }
+    else if (options == "defaults") {
+      // Overwrite defaults
+      $.extend(Busy.defaults, defaults || {});
+    }
+    else {
+      // Show busy image(s)
+      new Busy(options).show($(this));
+      return $(this);
+    }
+  };
+})(jQuery);
