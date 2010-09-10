@@ -1,5 +1,5 @@
 /*
- * jQuery-busy v1.0
+ * jQuery-busy v1.0.1
  * Copyright 2010 Tomasz Szymczyszyn
  *
  * Examples available at:
@@ -37,8 +37,13 @@
       var target = $(this);
 
       var busyImg = that.buildImg();
+      busyImg.css("visibility", "hidden");
+      busyImg.load(function() { 
+        that.positionImg(target, busyImg, that.options.position);
+        busyImg.css("visibility", "");
+      });
+
       $("body").append(busyImg);
-      that.positionImg(target, busyImg, that.options.position);
 
       if (that.options.hide)
         target.css("visibility", "hidden");
