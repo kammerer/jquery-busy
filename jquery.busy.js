@@ -1,5 +1,5 @@
 /*
- * jQuery-busy v1.0.1
+ * jQuery-busy v1.0.2
  * Copyright 2010 Tomasz Szymczyszyn
  *
  * Examples available at:
@@ -50,6 +50,16 @@
 
       $.data(this, "busy", busyImg);
     });
+  };
+
+  Busy.prototype.preload = function() {
+    var busyImg = this.buildImg();
+    busyImg.css("visibility", "hidden");
+      busyImg.load(function() {
+        $(this).remove();
+      });
+
+      $("body").append(busyImg);
   };
 
   // Creates image node, wraps it in $ object and returns.
@@ -112,6 +122,10 @@
     else if (options == "defaults") {
       // Overwrite defaults
       $.extend(Busy.defaults, defaults || {});
+    }
+    else if (options == "preload") {
+      // Preload busy image
+      new Busy(options).preload();
     }
     else {
       // Show busy image(s)
