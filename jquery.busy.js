@@ -1,5 +1,5 @@
 /*
- * jQuery-busy v1.0.2
+ * jQuery-busy v1.0.3
  * Copyright 2010 Tomasz Szymczyszyn
  *
  * Examples available at:
@@ -15,6 +15,20 @@
     this.options = $.extend({}, Busy.defaults, options);
   };
 
+  // Remembers currently "busied" targets along with options
+  Busy.instances = [];
+
+  Busy.repositionAll = function() {
+    console.log(Busy.instances);
+    for (var i = 0; i < Busy.instances.length; i++) {
+      if (! Busy.instances[i])
+        continue;
+
+      var options = Busy.instances[i].options;
+      new Busy(options).positionImg($(Busy.instances[i].target), $.data(Busy.instances[i].target, "busy"), options.position);
+    }
+  };
+
   Busy.prototype.hide = function(targets) {
     targets.each(function() {
       var busyImg = $.data(this, "busy");
@@ -24,6 +38,9 @@
       $(this).css("visibility", "");
 
       $.data(this, "busy", null);
+      for (var i = 0; i < Busy.instances.length; i++)
+        if (Busy.instances[i] != null && Busy.instances[i].target == this)
+          Busy.instances[i] = null;
     });
   };
 
@@ -49,6 +66,7 @@
         target.css("visibility", "hidden");
 
       $.data(this, "busy", busyImg);
+      Busy.instances.push({ target : this, options : that.options });
     });
   };
 
@@ -126,6 +144,10 @@
     else if (options == "preload") {
       // Preload busy image
       new Busy(options).preload();
+    }
+    else if (options == "reposition") {
+      // Update positions of all existing busy images
+      Busy.repositionAll();
     }
     else {
       // Show busy image(s)
