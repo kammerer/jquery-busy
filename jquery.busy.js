@@ -19,7 +19,6 @@
   Busy.instances = [];
 
   Busy.repositionAll = function() {
-    console.log(Busy.instances);
     for (var i = 0; i < Busy.instances.length; i++) {
       if (! Busy.instances[i])
         continue;
