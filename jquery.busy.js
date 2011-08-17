@@ -1,5 +1,5 @@
 /*
- * jQuery-busy v1.0.3
+ * jQuery-busy v1.0.4
  * Copyright 2010 Tomasz Szymczyszyn
  *
  * Examples available at:
@@ -57,6 +57,7 @@
       busyImg.load(function() { 
         that.positionImg(target, busyImg, that.options.position);
         busyImg.css("visibility", "");
+        busyImg.css("zIndex", that.options.zIndex);
       });
 
       $("body").append(busyImg);
