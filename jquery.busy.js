@@ -1,9 +1,6 @@
 /*
- * jQuery-busy v1.0.4
- * Copyright 2010 Tomasz Szymczyszyn
- *
- * Examples available at:
- * http://kammerer.boo.pl/code/jquery-busy
+ * jQuery-busy v1.0.5
+ * Copyright 2010-2012 Tomasz Szymczyszyn
  *
  * This plug-in is dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -106,8 +103,14 @@
     if (position == "left") {
       var busyLeft = targetPosition.left - busyWidth - this.options.offset;
     }
+    else if (position == "inner-left") {
+      var busyLeft = targetPosition.left;
+    }
     else if (position == "right") {
       var busyLeft = targetPosition.left + targetWidth + this.options.offset;
+    }
+    else if (position == "inner-right") {
+      var busyLeft = targetPosition.left + targetWidth - busyWidth - this.options.offset;
     }
     else {
       var busyLeft = targetPosition.left + (targetWidth - busyWidth) / 2.0;
