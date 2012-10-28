@@ -1,5 +1,5 @@
 /*
- * jQuery-busy v1.0.5
+ * jQuery-busy v1.0.6
  * Copyright 2010-2012 Tomasz Szymczyszyn
  *
  * This plug-in is dual licensed under the MIT and GPL licenses:
@@ -56,6 +56,8 @@
         busyImg.css("visibility", "");
         busyImg.css("zIndex", that.options.zIndex);
       });
+
+      that.positionImg(target, busyImg, that.options.position);
 
       $("body").append(busyImg);
 

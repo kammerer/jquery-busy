@@ -2,4 +2,3 @@ h1. jQuery-busy
 
 jQuery-busy is a jQuery plugin which allows to effortlessy show or hide animated activity / busyness indicator (call it spinner, loader or however you wish).
 
-See the "demo page.":http://kammerer.boo.pl/code/jquery-busy
