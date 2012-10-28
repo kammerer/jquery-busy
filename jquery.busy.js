@@ -155,7 +155,7 @@
     else {
       // Show busy image(s)
       new Busy(options).show($(this));
-      return $(this);
     }
+    return $(this);
   };
 })(jQuery);
